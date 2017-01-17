@@ -1,0 +1,59 @@
+function scan(path)
+        files = fs.list(path)
+        for n=1,#files do
+                if fs.isReadOnly(path.. "/" ..files[n]) then else
+                        if fs.isDir(path.. "/" ..files[n]) then
+                                scan(path.. "/" ..files[n])
+                        else
+                                local tLines = {}
+                                local file = io.open(path.. "/" ..files[n], "r")
+                                local line
+                                while true do
+                                        line = file:read()
+                                        if not line then break end
+                                        tLines[#tLines+1] = line
+                                end
+                                file:close()
+                               
+                                for i = 1,#tLines do
+                                        if string.find(tLines[i], "os.shutdown()") then
+                                                print(files[n].. "(Line #" ..i..") = Possible Shutdown Virus")
+                                        elseif string.find(tLines[i], "os.reboot()") then
+                                                print(files[n].. "(Line #" ..i..") = Possible Reboot Virus")
+                                        end
+                                end
+                        end
+                end
+        end
+end
+scan("/")
+function scan(path)
+	files = fs.list(path)
+	for n=1,#files do
+		if fs.isReadOnly(path.. "/" ..files[n]) then else
+			if fs.isDir(path.. "/" ..files[n]) then
+				scan(path.. "/" ..files[n])
+			else
+				local tLines = {}
+				local file = io.open(path.. "/" ..files[n], "r")
+				local line
+				while true do
+					line = file:read()
+					if not line then break end
+					tLines[#tLines+1] = line
+				end
+				file:close()
+				
+				for i = 1,#tLines do
+					if string.find(tLines[i], "os.shutdown()") then
+						print(files[n].. "(Line #" ..i..") = Possible Shutdown Virus")
+					elseif string.find(tLines[i], "os.reboot()") then
+						print(files[n].. "(Line #" ..i..") = Possible Reboot Virus")
+					end
+				end
+			end
+		end
+	end
+end
+
+scan("/")
